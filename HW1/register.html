@@ -22,17 +22,28 @@
             <label for="email">이메일:</label><br/>
             <input type="email" id="email" name="email" required><br/>
         </form>
-    </fieldset>
-    <filedset>
+    </fieldset><br/>
+    <fieldset>
         <legend>추가 정보 (Optional)</legend>
         <form action="submit_registration" method="post">
-            <label for="phone">전화번호:</label><br/>
-            <input type="tel" id="phone" name="phone"><br/>
+            <label for="phone">연락처:</label></label><br/>
+            <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"><br/>
 
-            <label for="address">주소:</label><br/>
-            <input type="text" id="address" name="address"><br/>
+            <label for="interest">관심분야:</label></label><br/>
+            
+            <input type="checkbox" id="interest" name="interest" value="technology"><label for="interest">HTML5</label>
+            <input type="checkbox" id="interest2" name="interest" value="sports"><label for="interest2">CSS3</label>
+            <input type="checkbox" id="interest3" name="interest" value="music"><label for="interest3">JavaScript</label><br/>
+
+            <label for="skill-level">숙련도:</label></label><br/>
+            <input type="range" id="skill-level" name="skill-level" min="1" max="10" step="1">
         </form>
-    </filedset>
-    <button type="submit">등록하기</button>
+    </fieldset><br/>
+    <button type="submit">가입 신청</button>
+    <button type="reset">초기화</button>
+    <footer>
+        <p><a href="../HW1/index.html">홈으로</a></p>
+        <p>ⓒ 2026 Web Programming Course. All rights reserved.</p>
+    </footer> 
 </body>
 </html>
