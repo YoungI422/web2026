@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let a = 0;
+      let b = 0.0;
+      let c = "0";
+      let d = false;
+      console.log("a == b", a == b); // true
+      console.log("a == c", a == c); // true
+      console.log("a == d", a == d); // true
+      console.log("a === b", a === b); // TRUE?
+      console.log("a === c", a === c); // false
+      console.log("a === d", a === d); // false
+      document.write(1 + 2 + 3 + 4 + "결과" + 5 + 6 + 7 + 8); // 10결과5678 , 앞에 까지는 숫자이기 때문에 덧셈 결합을 하는데 문자열이 나오면 뒤에 나오는 숫자들은 문자열로 인식해서 결합을 하는 것이다.
+
+      const str1 = "첫번째 줄 \n 두번째 줄";
+      const str2 = `첫번째 줄
+두번째 줄`;
+      console.log(str1);
+      console.log(str2);
+
+      const fruits = ["Banana", "Orange", "Apple", "Mango"];
+      let text = "<ul>";
+      fruits.forEach(myFunction);
+      text += "</ul>";
+      function myFunction(value) {
+        text += "<li>" + value + "</li>";
+      }
+      document.getElementById("demo").innerHTML = fruits.toString();
+      document.getElementById("demo").innerHTML = fruits.join(" * ");
+    </script>
+  </body>
+</html>
