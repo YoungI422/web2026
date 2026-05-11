@@ -1,105 +1,162 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>북마크 매니저</title>
     <style>
-        body {
-            font-family: sans-serif;
-            padding: 2rem;
-            max-width: 700px;
-            margin: 0 auto;
-        }
+      body {
+        font-family: sans-serif;
+        padding: 2rem;
+        max-width: 700px;
+        margin: 0 auto;
+      }
 
-        .form {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
+      .form {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
 
-        .form input {
-            flex: 1;
-            padding: 0.5rem;
-        }
+      .form input {
+        flex: 1;
+        padding: 0.5rem;
+      }
 
-        button {
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-        }
+      button {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
 
-        li {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            border-bottom: 1px solid #eee;
-        }
+      li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-bottom: 1px solid #eee;
+      }
 
-        .name {
-            flex: 1;
-            cursor: pointer;
-            color: #0066cc;
-        }
+      .name {
+        flex: 1;
+        cursor: pointer;
+        color: #0066cc;
+      }
 
-        .name:hover {
-            text-decoration: underline;
-        }
+      .name:hover {
+        text-decoration: underline;
+      }
 
-        .star {
-            cursor: pointer;
-            user-select: none;
-            color: #ccc;
-            font-size: 1.2rem;
-        }
+      .star {
+        cursor: pointer;
+        user-select: none;
+        color: #ccc;
+        font-size: 1.2rem;
+      }
 
-        .star.active {
-            color: gold;
-        }
+      .star.active {
+        color: gold;
+      }
 
-        .delete-btn {
-            background: #ff5252;
-            color: white;
-            border: none;
-            padding: 0.3rem 0.6rem;
-            cursor: pointer;
-        }
+      .delete-btn {
+        background: #ff5252;
+        color: white;
+        border: none;
+        padding: 0.3rem 0.6rem;
+        cursor: pointer;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>나의 북마크</h1>
     <div class="form">
-        <input type="text" id="nameInput" placeholder="사이트 이름">
-        <input type="url" id="urlInput" placeholder="https://...">
-        <button id="addBtn">추가</button>
+      <input type="text" id="nameInput" placeholder="사이트 이름" />
+      <input type="url" id="urlInput" placeholder="https://..." />
+      <button id="addBtn">추가</button>
     </div>
     <ul id="bookmarkList"></ul>
 
     <script>
-        const nameInput = document.querySelector('#nameInput');
-        const urlInput = document.querySelector('#urlInput');
-        const addBtn = document.querySelector('#addBtn');
-        const list = document.querySelector('#bookmarkList');
+      const nameInput = document.querySelector("#nameInput");
+      const urlInput = document.querySelector("#urlInput");
+      const addBtn = document.querySelector("#addBtn");
+      const list = document.querySelector("#bookmarkList");
 
-        // 데이터 모델: [{ id, name, url, starred }, ...]
-        let bookmarks = [];
+      // 데이터 모델: [{ id, name, url, starred }, ...]
+      let bookmarks = [
+        { id: 1, name: "Google", url: "https://www.google.com", starred: true },
+        {
+          id: 2,
+          name: "Naver",
+          url: "https://www.naver.com",
+          starred: false,
+        },
+      ];
 
-        // TODO 1: 페이지 로드 시 localStorage에서 bookmarks 배열 복원 + 렌더링
-        //         힌트: JSON.parse, render() 호출
+      // TODO 1: 페이지 로드 시 localStorage에서 bookmarks 배열 복원 + 렌더링
+      //         힌트: JSON.parse, render() 호출
+      localStorage.getItem("bookmarks") &&
+        (bookmarks = JSON.parse(localStorage.getItem("bookmarks"))); // localStorage에 저장된 북마크가 있으면 불러오기
+      render(); // 불러온 북마크를 화면에 렌더링
 
-        // TODO 2: render() — bookmarks 배열을 화면에 그리기
-        //         힌트: list.innerHTML = bookmarks.map(b => `<li data-id="${b.id}">...</li>`).join('')
+      // TODO 2: render() — bookmarks 배열을 화면에 그리기
+      //         힌트: list.innerHTML = bookmarks.map(b => `<li data-id="${b.id}">...</li>`).join('')
+      function render() {
+        list.innerHTML = bookmarks
+          .map(
+            (b) => `
+            <li data-id="${b.id}">
+                <span class="name">${b.name}</span>
+                <span class="star ${b.starred ? "active" : ""}">★</span>
+                <button class="delete-btn">삭제</button>
+            </li>`,
+          )
+          .join("");
+      }
 
-        // TODO 3: 추가 버튼 — 이름+URL 받아서 bookmarks에 추가 + 저장 + 렌더링
+      // TODO 3: 추가 버튼 — 이름+URL 받아서 bookmarks에 추가 + 저장 + 렌더링
+      addBtn.addEventListener("click", () => {
+        const name = nameInput.value.trim();
+        const url = urlInput.value.trim();
+        if (!name || !url) return alert("이름과 URL을 모두 입력하세요."); // name, url 둘 중 하나라도 비어있으면 알림
+        const newBookmark = {
+          id: Date.now(),
+          name,
+          url,
+          starred: false,
+        };
+        bookmarks.push(newBookmark); // 새로운 북마크를 배열에 추가
+        localStorage.setItem("bookmarks", JSON.stringify(bookmarks)); // 변경된 북마크 배열을 localStorage에 저장
+        render(); // 변경된 북마크 배열을 화면에 렌더링
+        nameInput.value = "";
+        urlInput.value = "";
+      });
 
-        // TODO 4: 이벤트 위임 — list에 click 1개로 별표 토글 / 삭제 / 사이트명 클릭 시 window.open
+      // TODO 4: 이벤트 위임 — list에 click 1개로 별표 토글 / 삭제 / 사이트명 클릭 시 window.open
+      list.addEventListener("click", (e) => {
+        const li = e.target.closest("li"); // 클릭한 요소에서 가장 가까운 li 요소 찾기
+        if (!li) return; // li 요소가 없으면 함수 종료 (예: 리스트 외부 클릭)
+        const id = Number(li.dataset.id); // 클릭한 li 요소의 data-id 속성에서 id 값 가져오기
+        const bookmark = bookmarks.find((b) => b.id === id); // bookmarks 배열에서 해당 id를 가진 북마크 객체 찾기
+        if (e.target.classList.contains("star")) {
+          // 별표 클릭
+          bookmark.starred = !bookmark.starred;
+          localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+          render();
+        } else if (e.target.classList.contains("delete-btn")) {
+          // 삭제 버튼 클릭
+          bookmarks = bookmarks.filter((b) => b.id !== id);
+          localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+          render();
+        } else if (e.target.classList.contains("name")) {
+          // 사이트명 클릭
+          window.open(bookmark.url, "_blank"); // 새 탭에서 URL 열기
+        }
+      });
     </script>
-</body>
-
+  </body>
 </html>

@@ -43,6 +43,10 @@
       localStorage.getItem("memo") &&
         (textarea.value = localStorage.getItem("memo"));
       charEl.textContent = textarea.value.length;
+      wordEl.textContent = textarea.value
+        .trim()
+        .split(/\s+/)
+        .filter((w) => w).length;
 
       // TODO 2: textarea의 input 이벤트로 글자/단어 수 갱신 + localStorage 저장
       //         힌트: text.length (글자 수), text.trim().split(/\s+/).filter(w => w).length (단어 수)
